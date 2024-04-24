@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class HoldSelect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Slider slider;
-    public float slider_StartingValue = 0;
     public float slider_EndValue = 1;
     public float currValue = 0;
     private float incr;
-    public int secToSelect = 5;
+    public int secToSelect = 3;
     public bool selected;
 
     void Start(){
@@ -36,6 +36,7 @@ public class HoldSelect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if(slider.value == slider_EndValue){
             selected = true;
         }
+        
     }
 
     public void OnPointerEnter (PointerEventData eventData) 
@@ -52,10 +53,20 @@ public class HoldSelect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             currValue = 0;
             slider.value = 0;
         } else if(selected == true){
-            if (this.gameObject.tag == "Control" || this.gameObject.tag == "Difficulty" || this.gameObject.tag == "Artwork"){
+            if (this.gameObject.tag == "Control" || this.gameObject.tag == "Difficulty" || this.gameObject.tag == "Artwork" || this.gameObject.tag == "Size"){
                 Settings.NewSelected(this.gameObject);    //saves the selected game object as user's control
             } else if (this.gameObject.tag == "Confirm" || this.gameObject.tag == "Done"){
                 Settings.ConfirmSelect();
+            } else if (this.gameObject.tag == "Play"){
+                SceneManager.LoadScene("Main Scene");
+            } else if (this.gameObject.tag == "Unpause"){
+                /*GameObject pauseMenu = GameObject.Find("Pause Menu");
+                pauseMenu.SetActive(false);*/
+                if(GameObject.Find("Pause Menu(Clone)")){
+                    Destroy(GameObject.Find("Pause Menu(Clone)"));
+                } else{
+                    Destroy(GameObject.Find("Pause Menu"));
+                }
             }
         }
 	}

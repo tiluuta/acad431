@@ -1,68 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.XR;
+using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem.EnhancedTouch;
+
 
 public class Settings : MonoBehaviour
 {
-    //XR controls
-    public XRNode handRole = XRNode.LeftHand;
 
     public static GameObject userControl; 
     public static GameObject userDifficulty;
     public static GameObject userArtwork;
+    public static GameObject userSize;
     public static TextMeshProUGUI titleText;
 
     public static GameObject controlsCanvas;
     public static GameObject difficultyCanvas;
     public static GameObject artworkCanvas;
+    public static GameObject sizeCanvas;
 
-    public GameObject portraitPrefab;
-    public GameObject stillLifePrefab;
+    public static GameObject portraitDiff;
+    public static GameObject stillLifeDiff;
 
 
-    public static GameObject startMenu;
-    public static GameObject pauseMenuPrefab;
+    public static GameObject settingsMenu;
+
     public static int pageNum = 1;
 
     void Start()
     {
         //default option
-        startMenu = GameObject.Find("Settings Menu");
+        settingsMenu = GameObject.Find("Settings Menu(Clone)");
         userControl = GameObject.Find("Shoulder Opt");
-        userDifficulty = GameObject.Find("Beginner Opt");
-        userArtwork = GameObject.Find("Portrait Opt");
+        userSize = GameObject.Find("Small");
+        userArtwork = GameObject.Find("Artwork Canvas").transform.Find("Row").gameObject.transform.Find("1").gameObject;
+        userDifficulty = GameObject.Find("Difficulty Canvas").transform.Find("Portrait_Difficulties").gameObject.transform.Find("1").gameObject;
+
+
+        portraitDiff = GameObject.Find("Portrait_Difficulties");
+        stillLifeDiff = GameObject.Find("Still Life_Difficulties");
+
         controlsCanvas = GameObject.Find("Controls Canvas");
         difficultyCanvas = GameObject.Find("Difficulty Canvas");
         difficultyCanvas.SetActive(false);
         artworkCanvas = GameObject.Find("Artwork Canvas");
         artworkCanvas.SetActive(false);
-
-
-        //find prefabs
-        pauseMenuPrefab = GameObject.Find("Pause Menu");
-        pauseMenuPrefab.SetActive(false);
+        sizeCanvas = GameObject.Find("Sizes Canvas");
+        sizeCanvas.SetActive(false);
     }
-    
-    void Update(){
-        InputDevices.GetDeviceAtXRNode(handRole).TryGetFeatureValue(CommonUsages.menuButton,out bool mButton);
-
-        if(mButton){
-            Debug.Log("MENU BUTTON PRESSED!!");
-            PauseMenu();
-        }
-    }
-
-    public static void PauseMenu(){
-        Debug.Log("open pause menu");
-        Instantiate(pauseMenuPrefab, GameObject.Find("UI").transform);
-        
-        //pause timer
-    }
-    
 
     //select object if different from already selected object
     public static void NewSelected(GameObject newOpt){
@@ -93,44 +80,70 @@ public class Settings : MonoBehaviour
                 Debug.Log("Selected: " + userArtwork);
             }
         }
+        if(userSize != newOpt){
+            if(newOpt.tag == "Size"){
+                userSize.GetComponent<HoldSelect>().slider.value = 0;
+                userSize.GetComponent<HoldSelect>().selected = false;
+
+                userSize = newOpt;
+                Debug.Log("Selected: " + userSize);
+            }
+        }
     }
 
     //go to next page
     public static void ConfirmSelect(){
         if(pageNum == 1){
             controlsCanvas.SetActive(false);
+            sizeCanvas.SetActive(true);
+            pageNum++;
+        }else if(pageNum == 2){
+            sizeCanvas.SetActive(false);
             artworkCanvas.SetActive(true);
             pageNum++;
-        } else if (pageNum == 2){
+        } else if (pageNum == 3){
             artworkCanvas.SetActive(false);
             difficultyCanvas.SetActive(true);
-            //Settings.GenerateDifficulties(portraitPrefab);
-            pageNum++;
-        } else if (pageNum == 3){
-            difficultyCanvas.SetActive(false);
-            startMenu.SetActive(false);
-            pageNum = 0;
-        }
-        SaveSettings();
-    }
 
-    //change difficulty options based on what artwork user chose
-    public void GenerateDifficulties(GameObject artworkPrefab){
-        Instantiate(artworkPrefab,difficultyCanvas.transform);
+            //change images for difficulty depending on artwork chosen
+            Debug.Log(userArtwork.name);
+            if (userArtwork.name == "2"){
+                stillLifeDiff.SetActive(true);
+                portraitDiff.SetActive(false);
+            } else{
+                stillLifeDiff.SetActive(false);
+                portraitDiff.SetActive(true);
+            }
+
+            pageNum++;
+        } else if (pageNum == 4){
+            difficultyCanvas.SetActive(false);
+            pageNum = 1;
+            PauseMenu.CloseMenu(GameObject.Find("Settings Menu(Clone)"));
+        }
+
+        SaveSettings();
     }
 
     //saves settings into data in json
     public static void SaveSettings(){
-        Debug.Log("now saving");
         UserData data = new UserData();
         //load old data
         data.Load();
         //update with new control, difficulty, artwork
         data.userControl = userControl.name;
-        data.userDifficulty = userDifficulty.name;
-        data.userArtwork = userArtwork.name;
+        if(userDifficulty == null){
+            data.userDifficulty = "1";
+        } else{
+            data.userDifficulty = userDifficulty.name;
+        }
+        if(userArtwork == null){
+            data.userArtwork = "1";
+        } else{
+            data.userArtwork = userArtwork.name;
+        }
+        data.userSize = userSize.name;
         data.Save();
     }
-
 
 }

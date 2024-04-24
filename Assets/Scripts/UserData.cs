@@ -15,10 +15,18 @@ public class UserData
     public string userDifficulty;   //last selected difficulty level
     public string userControl;  //last selected control type
     public string userArtwork;  //last selected artwork
+    public string userSize;  //last selected canvas size
+
+
 
     //default constructor
     public UserData(){
-
+        latestTime = 0;
+        bestTime = 0;
+        userControl = "Shoulder Opt";
+        userDifficulty = "1";
+        userArtwork = "1";
+        userSize = "Small";
     }
 
     public UserData(UserData newData){
@@ -27,6 +35,7 @@ public class UserData
         userDifficulty = newData.userDifficulty;
         userControl = newData.userControl;
         userArtwork = newData.userArtwork;
+        userSize = newData.userSize;
     }
 
     //load from json
@@ -41,6 +50,7 @@ public class UserData
                 userControl = JsonUtility.FromJson<UserData>(textData).userControl;
                 userDifficulty = JsonUtility.FromJson<UserData>(textData).userDifficulty;
                 userArtwork = JsonUtility.FromJson<UserData>(textData).userArtwork;
+                userSize = JsonUtility.FromJson<UserData>(textData).userSize;
             }
     }
 

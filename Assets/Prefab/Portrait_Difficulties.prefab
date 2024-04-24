@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 4630692887690774477}
   - component: {fileID: 7820401068731818584}
   m_Layer: 5
-  m_Name: Beginner Opt
+  m_Name: 1
   m_TagString: Difficulty
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -172,7 +172,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 1109066517723424507}
-  slider_StartingValue: 0
   slider_EndValue: 1
   currValue: 0
   secToSelect: 3
@@ -551,7 +550,7 @@ GameObject:
   - component: {fileID: 3236813233803363330}
   - component: {fileID: 856614441250810463}
   m_Layer: 5
-  m_Name: Mastering Opt
+  m_Name: 2
   m_TagString: Difficulty
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -592,7 +591,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 6450171138410843901}
-  slider_StartingValue: 0
   slider_EndValue: 1
   currValue: 0
   secToSelect: 3
@@ -1847,7 +1845,7 @@ GameObject:
   - component: {fileID: 6057384064580576400}
   - component: {fileID: 3052027651419466439}
   m_Layer: 5
-  m_Name: Professional Opt
+  m_Name: 4
   m_TagString: Difficulty
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1888,7 +1886,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 2130632094016121602}
-  slider_StartingValue: 0
   slider_EndValue: 1
   currValue: 0
   secToSelect: 3
@@ -1993,7 +1990,7 @@ GameObject:
   - component: {fileID: 1092461233720363698}
   - component: {fileID: 8885817754782819716}
   m_Layer: 5
-  m_Name: Proficient Opt
+  m_Name: 3
   m_TagString: Difficulty
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2034,7 +2031,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 3064815594502937195}
-  slider_StartingValue: 0
   slider_EndValue: 1
   currValue: 0
   secToSelect: 3

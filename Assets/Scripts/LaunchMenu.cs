@@ -3,50 +3,107 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using TMPro;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.XR;
+using UnityEngine.EventSystems;
+
 
 
 public class LaunchMenu : MonoBehaviour
 {
-    public TextMeshProUGUI timeText;
-    public TextMeshProUGUI bestText;
+    //XR controls
+    public XRNode handRole = XRNode.LeftHand;
+
+    public GameObject SettingsMenu;
+    public GameObject settingsCanvas;
+
+
+    //user score data
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI bestScore;
+
+
+    //user settings data
+    public GameObject controlSetting;
+    public TextMeshProUGUI sizeSetting;
+    public GameObject artworkSetting;
+    public GameObject difficultySetting;
+
+
+    public List<Sprite> settingImages= new List<Sprite>();
     private UserData data = new UserData();
     public bool dataFound;
-
+    public GameObject pauseMenu;
 
 
     void Start()
     {
-        timeText.enabled = false;
-        bestText.text = "";
-
+        GameObject.Find("Pause Menu").SetActive(false);
+        SettingsMenu.SetActive(false);
         string path = Application.persistentDataPath + "/userdata.json";
 
         if(File.Exists(path)){
             dataFound = true;
             data.Load();
-            GetData();
         } else{
             dataFound = false;
+            data.Save();
+        }
+
+        GetData();
+    }
+
+    void Update(){
+        InputDevices.GetDeviceAtXRNode(handRole).TryGetFeatureValue(CommonUsages.menuButton,out bool mButton);
+
+        if(mButton){
+            PauseMenu();
         }
     }
 
     public void GetData(){
-        timeText.enabled = true;
-        int totalMin = (int)data.bestTime;
-        int hours = totalMin / 60;
-        int min = totalMin % 60;
-        bestText.text = "" + hours + ":" + min;
+        if(dataFound && data.latestTime > 0){
+            int totalMin = (int)data.bestTime;
+            int hours = totalMin / 60;
+            int min = totalMin % 60;
+            bestScore.text = "" + hours + ":" + min;
+        } else{
+            scoreText.enabled = false;
+            bestScore.enabled = false;
+        }
+
+        foreach (Sprite i in settingImages){
+            if (i.name == data.userControl){
+                controlSetting.GetComponent<Image>().sprite = i;
+                if(data.userControl == "Shoulder Opt"){
+                    controlSetting.GetComponent<RectTransform>().offsetMax = new Vector2(130,0);
+                }
+            }
+            
+            if (data.userArtwork == "1"){
+                if(i.name == "Portrait Opt"){
+                    artworkSetting.GetComponent<Image>().sprite = i;
+                } else if(i.name == data.userDifficulty + "_Portrait"){
+                    difficultySetting.GetComponent<Image>().sprite = i;
+                }
+            } else if(data.userArtwork == "2"){
+                if(i.name == "Still Life Opt"){
+                    artworkSetting.GetComponent<Image>().sprite = i;
+                } else if(i.name == data.userDifficulty + "_Still Life"){
+                    difficultySetting.GetComponent<Image>().sprite = i;
+                }
+            }
+        }
+
+        sizeSetting.text = data.userSize;
+
     }
 
-    public void StartButton(){
-        //if user has played before: skip settings
-        if(dataFound){
-            //scene with main game
-        }
-        //if user is new: go to Settings menu
-        if(!dataFound){
-            SceneManager.LoadScene("Settings");
+    public void PauseMenu(){
+        if(GameObject.Find("Pause Menu") || GameObject.Find("Pause Menu(Clone)")){
+            pauseMenu.SetActive(false);
+        } else{
+            pauseMenu.SetActive(true);
         }
     }
 }
