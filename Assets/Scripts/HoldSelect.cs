@@ -58,6 +58,7 @@ public class HoldSelect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             } else if (this.gameObject.tag == "Confirm" || this.gameObject.tag == "Done"){
                 Settings.ConfirmSelect();
             } else if (this.gameObject.tag == "Play"){
+                Debug.Log("Starting new game");
                 SceneManager.LoadScene("Main Scene");
             } else if (this.gameObject.tag == "Unpause"){
                 /*GameObject pauseMenu = GameObject.Find("Pause Menu");

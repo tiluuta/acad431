@@ -2194,19 +2194,6 @@ MonoBehaviour:
   m_MinAngleAllowed: 5
   m_MaxAngleAllowed: 10
   m_TimeUntilThresholdReachesMaxAngle: 10
---- !u!114 &2509667835418020231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5980026977644339858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 219c03c0b44f94333b282412f42115cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeText: {fileID: 5046573412342270587}
 --- !u!1 &2576514641473047611
 GameObject:
   m_ObjectHideFlags: 0
@@ -3499,7 +3486,6 @@ GameObject:
   - component: {fileID: 2300774446647294396}
   - component: {fileID: 7526546360958507903}
   - component: {fileID: 5046573412342270587}
-  - component: {fileID: 2509667835418020231}
   m_Layer: 5
   m_Name: BestScore
   m_TagString: Untagged

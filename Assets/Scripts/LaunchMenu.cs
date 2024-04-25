@@ -62,11 +62,12 @@ public class LaunchMenu : MonoBehaviour
     }
 
     public void GetData(){
-        if(dataFound && data.latestTime > 0){
-            int totalMin = (int)data.bestTime;
-            int hours = totalMin / 60;
-            int min = totalMin % 60;
-            bestScore.text = "" + hours + ":" + min;
+        if(dataFound && data.bestTime > 0f){
+            Debug.Log("Update best time");
+            int totalSec = (int)data.bestTime;
+            int min = totalSec / 60;
+            int sec = totalSec % 60;
+            bestScore.text = string.Format("{0:00}:{1:00}", min, sec);
         } else{
             scoreText.enabled = false;
             bestScore.enabled = false;
