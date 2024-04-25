@@ -16,7 +16,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Brush
   - Water
   - UI
   - Spawner Contact

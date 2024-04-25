@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     public Texture2D[] userDifficulty3Artworks_userArtwork1;
     public Texture2D[] userDifficulty3Artworks_userArtwork2;
 
+    public Sprite[] allArtwork;
+
     private NewUserData userData;
     private float currentTime;
     public static bool isTimerRunning = true;
@@ -36,8 +38,8 @@ public class GameManager : MonoBehaviour
         bestTimeText.text = "Best Time: " + userData.bestTime.ToString("F2");
 
         // Modify the size of the Artboard canvas
-            switch (userData.canvasSize)
-    {
+        switch (userData.userSize)
+        {
             case "Small":
                 artboardCube.transform.localScale = new Vector3(0.5f, 0.5f, .008f);
                 break;
@@ -50,11 +52,12 @@ public class GameManager : MonoBehaviour
             default:
                 artboardCube.transform.localScale = new Vector3(0.5f, 0.5f, .008f);
                 break;
-    }
+        }
 
         // Load the desired artwork based on userDifficulty and userArtwork
-        Texture2D selectedArtwork = GetSelectedArtwork();
-        artboardCanvas.GetComponent<RawImage>().texture = selectedArtwork;
+        /*Texture2D selectedArtwork = GetSelectedArtwork();
+        artboardCanvas.GetComponent<RawImage>().texture = selectedArtwork;*/
+        GetSelectedArtwork();
 
         currentTime = 0f;
         isTimerRunning = true;
@@ -75,7 +78,6 @@ public class GameManager : MonoBehaviour
                 // destroy the canvas
                 // move the canvas forward
                 // destroy the canvas
-                Debug.Log("yayyyyy we destroyed it");
                 Destroy(artboardCanvas);
                 Destroy (GameObject.Find ("DaCanvas"));
             }
@@ -113,7 +115,7 @@ public void OnDoneButtonClicked()
     SceneManager.LoadScene(nextScene);
 }
 
-    private Texture2D GetSelectedArtwork()
+    /*private Texture2D GetSelectedArtwork()
     {
         Texture2D[] artworks = null;
 
@@ -139,6 +141,20 @@ public void OnDoneButtonClicked()
         }
 
         return null;
+    }*/
+
+    public void GetSelectedArtwork(){
+        foreach (Sprite i in allArtwork){            
+            if (userData.userArtwork == 1){
+               if(i.name == userData.userDifficulty + "_Portrait"){
+                    artboardCanvas.GetComponent<Image>().sprite = i;
+                }
+            } else if(userData.userArtwork == 2){
+                if(i.name == userData.userDifficulty + "_Still Life"){
+                    artboardCanvas.GetComponent<Image>().sprite = i;
+                }
+            }
+        }
     }
 
 
@@ -153,7 +169,7 @@ public class NewUserData
     public int userDifficulty; //last selected difficulty level
     public string userControl; //last selected control type
     public int userArtwork; //last selected artwork
-    public string canvasSize; //size of the canvas
+    public string userSize; //size of the canvas
 
     //default constructor
     public NewUserData() { }
@@ -163,7 +179,7 @@ public class NewUserData
     latestTime = newData.latestTime;
     bestTime = newData.bestTime;
     userControl = newData.userControl;
-    canvasSize = newData.canvasSize;
+    userSize = newData.userSize;
 
     // Convert userDifficulty to int
     if (int.TryParse(newData.userDifficulty.ToString(), out int difficulty))
@@ -199,7 +215,8 @@ public class NewUserData
             userControl = loadedData.userControl;
             userDifficulty = loadedData.userDifficulty;
             userArtwork = loadedData.userArtwork;
-            canvasSize = loadedData.canvasSize;
+            Debug.Log(textData);
+            userSize = loadedData.userSize;
         }
     }
 
